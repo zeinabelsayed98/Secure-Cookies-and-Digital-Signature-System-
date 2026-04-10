@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 50px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .error { color: red; font-weight: bold; border: 2px solid red; padding: 10px; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Part A: Secure Cookie Dashboard</h2>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+            <p>Go back to <a href="/">Login</a></p>
+        {% else %}
+            <p class="success">Access Granted! Welcome, <b>{{ username }}</b></p>
+            <p>Your Role: <b>{{ role }}</b></p>
+            <hr>
+            <h4>Current Browser Cookies (Raw Data):</h4>
+            <p><b>Payload:</b> {{ payload }}</p>
+            <p><b>MAC Tag:</b> {{ mac }}</p>
+            
+            <div style="background: #eee; padding: 10px;">
+                <p>💡 <b>How to demonstrate tampering:</b></p>
+                <ol>
+                    <li>Press <b>F12</b> to open Developer Tools.</li>
+                    <li>Go to <b>Application</b> tab -> <b>Cookies</b>.</li>
+                    <li>Change "user" to "admin" in the <code>user_payload</code> value.</li>
+                    <li>Refresh the page.</li>
+                </ol>
+            </div>
+            <button onclick="location.reload()">Refresh to verify MAC</button>
+        {% endif %}
+    </div>
+</body>
+</html>

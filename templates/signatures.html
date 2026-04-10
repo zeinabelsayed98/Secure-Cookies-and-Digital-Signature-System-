@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Signatures - Part B</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; background: #fafafa; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .section { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #3498db; }
+        textarea { width: 100%; height: 80px; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; color: white; font-weight: bold; }
+        .btn-blue { background: #3498db; }
+        .btn-green { background: #2ecc71; }
+        .btn-orange { background: #e67e22; }
+        .result { margin-top: 15px; padding: 10px; border-radius: 5px; }
+        .valid { background: #d4edda; color: #155724; }
+        .invalid { background: #f8d7da; color: #721c24; }
+        .flash { background: #fff3cd; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ffeeba; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Part B: Digital Signature Module</h2>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="section">
+            <h3>1. Key Pair Generation</h3>
+            <form action="/signatures" method="POST">
+                <input type="hidden" name="action" value="generate">
+                <button type="submit" class="btn btn-blue">Generate 2048-bit RSA Keys</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h3>2. Sign Content</h3>
+            <form action="/signatures" method="POST">
+                <input type="hidden" name="action" value="sign">
+                <textarea name="content" placeholder="Type text or 'file content' here to sign...">{{ content if content else '' }}</textarea>
+                <button type="submit" class="btn btn-orange">Sign with Private Key</button>
+            </form>
+            {% if sig %}
+                <p style="word-break: break-all; font-size: 12px; color: #666;"><b>Signature:</b> {{ sig }}</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h3>3. Verify Integrity</h3>
+            <form action="/verify" method="POST">
+                <textarea name="content" placeholder="Paste content to verify... (Try changing one letter to fail)">{{ content if content else '' }}</textarea>
+                <button type="submit" class="btn btn-green">Verify with Public Key</button>
+            </form>
+            
+            {% if verification_result %}
+                <div class="result {{ 'valid' if 'Valid' in verification_result else 'invalid' }}">
+                    <b>Result: {{ verification_result }}</b>
+                </div>
+            {% endif %}
+        </div>
+        
+        <a href="/">Back to Login (Part A)</a> | <a href="/bonus">Go to Bonus Tasks (Attacks)</a>
+    </div>
+</body>
+</html>

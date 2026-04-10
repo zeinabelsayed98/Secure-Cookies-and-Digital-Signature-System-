@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bonus: Cryptographic Attacks</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a202c; color: white; padding: 40px; }
+        .container { max-width: 800px; margin: auto; background: #2d3748; padding: 30px; border-radius: 12px; }
+        h1 { color: #f56565; text-align: center; }
+        .attack-box { background: #edf2f7; color: #2d3748; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 10px solid #e53e3e; }
+        .btn-attack { background: #e53e3e; color: white; border: none; padding: 12px 24px; cursor: pointer; border-radius: 6px; font-weight: bold; margin-top: 10px; }
+        .btn-attack:hover { background: #c53030; }
+        .result-area { margin-top: 15px; padding: 15px; background: #1a202c; color: #48bb78; border-radius: 5px; display: none; white-space: pre-wrap; font-family: monospace; border: 1px solid #48bb78; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bonus: Security Attacks (Wong P. 150)</h1>
+        
+        <!-- الهجوم الأول -->
+        <div class="attack-box">
+            <h3>1) Key Substitution Attack</h3>
+            <p><strong>Scenario:</strong> The attacker replaces the server's public key with their own key in the database.</p>
+            <button class="btn-attack" onclick="runAttack('/bonus/key-substitution', 'res1')">Execute Key Substitution</button>
+            <div id="res1" class="result-area"></div>
+        </div>
+
+        <!-- الهجوم الثاني -->
+        <div class="attack-box">
+            <h3>2) Message Key Substitution</h3>
+            <p><strong>Scenario:</strong> The attacker sends a fake message along with a fake public key to be used for verification.</p>
+            <button class="btn-attack" onclick="runAttack('/bonus/message-key-substitution', 'res2')">Execute Message Key Substitution</button>
+            <div id="res2" class="result-area"></div>
+        </div>
+
+        <p><a href="/signatures" style="color: #63b3ed; text-decoration: none;">← Back to Main System</a></p>
+    </div>
+
+    <script>
+        function runAttack(endpoint, resultId) {
+            const resDiv = document.getElementById(resultId);
+            resDiv.style.display = 'block';
+            resDiv.style.color = "#48bb78";
+            resDiv.innerHTML = "Wait... Sending request to server...";
+
+            fetch(endpoint, { method: 'POST' })
+            .then(response => {
+                if (!response.ok) throw new Error('Server Error ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                resDiv.innerHTML = "<b>[SERVER RESPONSE]:</b>\n" + JSON.stringify(data, null, 4);
+            })
+            .catch(err => {
+                resDiv.style.color = "#f56565";
+                resDiv.innerHTML = "<b>[ERROR]:</b> " + err.message;
+            });
+        }
+    </script>
+</body>
+</html>

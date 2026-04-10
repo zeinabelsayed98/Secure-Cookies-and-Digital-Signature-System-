@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Login - Part A</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 380px; text-align: center; }
+        h2 { color: #1a73e8; margin-bottom: 20px; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { background-color: #1a73e8; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.3s; margin-top: 10px; }
+        button:hover { background-color: #1557b0; }
+        
+        /* تنسيق رسالة الخطأ */
+        .error-box { background-color: #ffe3e3; color: #d63031; padding: 12px; border-radius: 6px; border: 1px solid #fab1a0; margin-bottom: 20px; font-weight: bold; font-size: 14px; }
+        
+        .note { font-size: 12px; color: #666; margin-top: 15px; }
+        a { color: #1a73e8; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>System Login</h2>
+
+        <!-- رسالة الخطأ تظهر هنا فقط إذا وجدت -->
+        {% if error %}
+            <div class="error-box">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <button type="submit">Login & Generate Cookie</button>
+        </form>
+
+        <p class="note">Part A: Demonstrating MAC-protected cookies.</p>
+        <div style="margin-top: 20px;">
+            <a href="/signatures">Go to Digital Signatures (Part B)</a>
+        </div>
+    </div>
+</body>
+</html>
